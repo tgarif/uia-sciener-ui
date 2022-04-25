@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "electron:start": "yarn build && electron .",
+    "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:builder": "electron-builder",
     "app:build": "yarn build && yarn electron:builder"
