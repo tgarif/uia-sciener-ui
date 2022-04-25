@@ -1,0 +1,40 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ['eslint:recommended', 'plugin:vue/essential', 'prettier'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: 'module',
+  },
+  plugins: ['vue', '@typescript-eslint'],
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-empty-function': 'warn',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    semi: 'error',
+    'no-tabs': 'error',
+    'no-unused-vars': 'warn',
+    'no-empty-function': 'warn',
+    'no-trailing-spaces': 'error',
+    'object-curly-spacing': 'off',
+    '@typescript-eslint/object-curly-spacing': ['always'],
+    'key-spacing': [2, { afterColon: true }],
+    'no-empty': 'warn',
+    'comma-dangle': 'off',
+    'prefer-destructuring': 'warn',
+    quotes: [2, 'single', { avoidEscape: false, allowTemplateLiterals: true }],
+    'no-redeclare': 'off',
+    indent: [2, 2, { SwitchCase: 1 }],
+    'max-len': [2, 100, 2, { ignoreUrls: true }],
+    'no-undefined': 'error',
+    'no-useless-escape': 'warn',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
+};
