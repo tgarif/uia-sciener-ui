@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "electron:start": "electron ."
+    "electron:start": "yarn build && electron .",
+    "electron:pack": "electron-builder --dir",
+    "electron:builder": "electron-builder",
+    "app:build": "yarn build && yarn electron:builder"
   },
   "dependencies": {
     "@quasar/extras": "^1.13.5",
@@ -29,5 +32,32 @@
     "vite": "^2.9.5",
     "vite-tsconfig-paths": "^3.4.1",
     "vue-tsc": "^0.34.7"
+  },
+  "build": {
+    "appId": "com.my-website.my-app",
+    "productName": "uia-sciener",
+    "copyright": "Copyright © 2022 Tengku Arif",
+    "mac": {
+      "category": "",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "zip"
+    },
+    "linux": {
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist_electron"
+    }
   }
 }
