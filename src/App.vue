@@ -1,8 +1,6 @@
-<script setup lang="ts">
-window.electronAPI.test();
-</script>
+<script setup lang="ts"></script>
 
-<template>Hello</template>
+<template></template>
 
 <style>
 #app {

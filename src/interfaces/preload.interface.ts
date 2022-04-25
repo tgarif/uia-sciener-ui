@@ -1,3 +1,3 @@
 export interface Preload {
-  test: () => void;
+  setTitle: (title: string) => void;
 }

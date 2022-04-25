@@ -1,5 +1,5 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  test: () => console.log('This is a test'),
+  setTitle: (title) => ipcRenderer.send('set-title', title),
 });

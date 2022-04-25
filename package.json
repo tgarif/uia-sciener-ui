@@ -14,8 +14,11 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.13.5",
+    "axios": "^0.26.1",
+    "dayjs": "^1.11.1",
     "quasar": "^2.6.6",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@babel/types": "^7.17.0",

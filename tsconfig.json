@@ -16,9 +16,14 @@
     "baseUrl": "./src",
     "outDir": "./dist",
     "paths": {
+      "@api/*": ["./api/*"],
       "@assets/*": ["./assets/*"],
       "@components/*": ["./components/*"],
-      "@interfaces/*": ["./interfaces/*"]
+      "@interfaces/*": ["./interfaces/*"],
+      "@layouts/*": ["./layouts/*"],
+      "@router/*": ["./router/*"],
+      "@utils/*": ["./utils/*"],
+      "@views/*": ["./views/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

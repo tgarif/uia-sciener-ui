@@ -1,8 +1,10 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 
+let mainWindow;
+
 function createWindow() {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -11,9 +13,15 @@ function createWindow() {
     },
   });
 
-  win.loadFile('dist/index.html');
+  ipcMain.on('set-title', (event, title) => {
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    win.setTitle(title);
+  });
 
-  win.webContents.openDevTools();
+  mainWindow.loadFile('dist/index.html');
+
+  mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
