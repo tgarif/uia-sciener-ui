@@ -1,6 +1,6 @@
 import { formatTime } from '@utils/dayjs.util';
 import { config } from 'providers/config.provider';
-import { Notify, Screen } from 'quasar';
+import { Notify, Screen, Platform } from 'quasar';
 import Axios, { AxiosError } from 'axios';
 
 const instance = Axios.create({
@@ -20,19 +20,29 @@ instance.interceptors.request.use(
   (error: AxiosError<any>) => {
     let caption = error.response?.data.error.message;
 
-    Notify.create({
-      color: 'blue-grey-8',
-      message: error.response?.data.error.code || 'Something went wrong',
-      caption,
-      icon: 'error',
-      position: Screen.lt.md ? 'bottom' : 'bottom-left',
-      actions: [
+    if (Platform.is.electron) {
+      new Notification(
+        error.response?.data.error.code || 'Something went wrong',
         {
-          label: 'x',
-          color: 'blue-grey-1',
-        },
-      ],
-    });
+          body: caption,
+        }
+      );
+    } else {
+      Notify.create({
+        color: 'blue-grey-8',
+        message: error.response?.data.error.code || 'Something went wrong',
+        caption,
+        icon: 'error',
+        position: Screen.lt.md ? 'bottom' : 'bottom-left',
+        actions: [
+          {
+            label: 'x',
+            color: 'blue-grey-1',
+          },
+        ],
+      });
+    }
+
     return Promise.reject(error);
   }
 );
@@ -52,19 +62,29 @@ instance.interceptors.response.use(
   (error: AxiosError<any>) => {
     let caption = error.response?.data.error.message;
 
-    Notify.create({
-      color: 'blue-grey-8',
-      message: error.response?.data.error.code || 'Something went wrong',
-      caption,
-      icon: 'error',
-      position: Screen.lt.md ? 'bottom' : 'bottom-left',
-      actions: [
+    if (Platform.is.electron) {
+      new Notification(
+        error.response?.data.error.code || 'Something went wrong',
         {
-          label: 'x',
-          color: 'blue-grey-1',
-        },
-      ],
-    });
+          body: caption,
+        }
+      );
+    } else {
+      Notify.create({
+        color: 'blue-grey-8',
+        message: error.response?.data.error.code || 'Something went wrong',
+        caption,
+        icon: 'error',
+        position: Screen.lt.md ? 'bottom' : 'bottom-left',
+        actions: [
+          {
+            label: 'x',
+            color: 'blue-grey-1',
+          },
+        ],
+      });
+    }
+
     return Promise.reject(error);
   }
 );
