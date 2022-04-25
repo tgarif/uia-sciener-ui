@@ -4,18 +4,21 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "jsx": "preserve",
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client"],
     "sourceMap": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["DOM", "ESNext"],
     "baseUrl": "./src",
     "outDir": "./dist",
-    "incremental": true
+    "paths": {
+      "@assets/*": ["./assets/*"],
+      "@components/*": ["./components/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
