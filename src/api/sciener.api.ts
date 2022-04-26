@@ -12,16 +12,16 @@ export class ScienerApi {
     return this.axios.get('/');
   };
 
-  freezeRental = (): Promise<any> => {
-    return this.axios.post('/freeze', {
+  freezeRental = (id: string): Promise<any> => {
+    return this.axios.post(`/freeze/${id}`, {
       headers: {
         'Access-Token': String(localStorage.getItem('Access-Token')),
       },
     });
   };
 
-  unfreezeRental = (): Promise<any> => {
-    return this.axios.post('/unfreeze', {
+  unfreezeRental = (id: string): Promise<any> => {
+    return this.axios.post(`/unfreeze/${id}`, {
       headers: {
         'Access-Token': String(localStorage.getItem('Access-Token')),
       },

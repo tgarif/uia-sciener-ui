@@ -21,6 +21,7 @@ onBeforeRouteLeave(() => {
   }
 });
 
+const isLoading = ref(false);
 const rentalData = ref({} as Rental);
 
 const checkRentalData = () => {
@@ -61,6 +62,25 @@ onMounted(() => {
     getRental();
   }
 });
+
+const action = async () => {
+  try {
+    isLoading.value = true;
+    let response;
+
+    if (rentalData.value.room.status === 'freeze') {
+      response = await api.sciener.unfreezeRental(props.id as string);
+    } else {
+      response = await api.sciener.freezeRental(props.id as string);
+    }
+
+    isLoading.value = false;
+
+    console.log(response);
+  } catch {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -110,9 +130,9 @@ onMounted(() => {
         >, end at <code>{{ rentalData.duration.end_date }}</code>
       </div>
 
-      <div class="row">
+      <div class="row full-width">
         <div class="col-12 col-sm-6 q-pa-md">
-          <q-card class="my-card" flat bordered>
+          <q-card class="content--card" flat bordered>
             <q-item>
               <q-item-section>
                 <q-item-label class="text-h5">Tenant</q-item-label>
@@ -121,49 +141,42 @@ onMounted(() => {
 
             <q-separator />
 
-            <q-card-section horizontal>
-              <q-card-section> ID </q-card-section>
+            <q-card-section>
+              <div class="text-h6">ID</div>
 
-              <q-separator vertical />
-
-              <q-card-section class="col-6">
+              <div class="text-grey-9">
                 {{ rentalData.tenant.id }}
-              </q-card-section>
+              </div>
             </q-card-section>
 
-            <q-card-section horizontal>
-              <q-card-section> Name </q-card-section>
+            <q-card-section>
+              <div class="text-h6">Name</div>
 
-              <q-separator vertical />
-
-              <q-card-section class="col-6">
+              <div class="text-grey-9">
                 {{ rentalData.tenant.name }}
-              </q-card-section>
+              </div>
             </q-card-section>
 
-            <q-card-section horizontal>
-              <q-card-section> Email </q-card-section>
+            <q-card-section>
+              <div class="text-h6">Email</div>
 
-              <q-separator vertical />
-
-              <q-card-section class="col-6">
+              <div class="text-grey-9">
                 {{ rentalData.tenant.email }}
-              </q-card-section>
+              </div>
             </q-card-section>
 
-            <q-card-section horizontal>
-              <q-card-section> Contact Number </q-card-section>
+            <q-card-section>
+              <div class="text-h6">Contact Number</div>
 
-              <q-separator vertical />
-
-              <q-card-section class="col-6">
+              <div class="text-grey-9">
                 {{ rentalData.tenant.contact_no }}
-              </q-card-section>
+              </div>
             </q-card-section>
           </q-card>
         </div>
+
         <div class="col-12 col-sm-6 q-pa-md">
-          <q-card class="my-card" flat bordered>
+          <q-card class="content--card" flat bordered>
             <q-item>
               <q-item-section>
                 <q-item-label class="text-h5">Room</q-item-label>
@@ -172,18 +185,48 @@ onMounted(() => {
 
             <q-separator />
 
-            <q-card-section horizontal>
-              <q-card-section> asdqwe </q-card-section>
+            <q-card-section>
+              <div class="text-h6">ID</div>
 
-              <q-separator vertical />
+              <div class="text-grey-9">
+                {{ rentalData.room.id }}
+              </div>
+            </q-card-section>
 
-              <q-card-section class="col-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </q-card-section>
+            <q-card-section>
+              <div class="text-h6">Name</div>
+
+              <div class="text-grey-9">
+                {{ rentalData.room.name }}
+              </div>
+            </q-card-section>
+
+            <q-card-section>
+              <div class="text-h6">Key</div>
+
+              <div class="text-grey-9">
+                {{ rentalData.room.key }}
+              </div>
+            </q-card-section>
+
+            <q-card-section>
+              <div class="text-h6">Status</div>
+
+              <div class="text-grey-9">
+                {{ rentalData.room.status }}
+              </div>
             </q-card-section>
           </q-card>
         </div>
       </div>
+      <q-btn
+        class="button text-capitalize"
+        color="white"
+        text-color="dark"
+        :label="rentalData.room.status === 'freeze' ? 'unfreeze' : 'freeze'"
+        style="border: 2px solid black; margin-top: 1rem"
+        @click="action()"
+      />
     </div>
 
     <div class="loading" v-else><q-spinner color="primary" size="3em" /></div>
