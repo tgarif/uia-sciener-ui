@@ -28,7 +28,6 @@ const webRoutes: RouteRecordRaw[] = [
         path: '/rent/:id',
         component: () => import('@views/RentDetails.vue'),
         meta: { requiresAuth: true },
-        props: true,
         beforeEnter: (to, from, next) => {
           if (to.params.id) {
             next();

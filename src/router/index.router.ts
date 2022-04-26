@@ -1,15 +1,10 @@
-import {
-  createRouter,
-  createWebHistory,
-  createWebHashHistory,
-} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from '@router/routes';
 import { applicationStore } from '@stores/application.store';
-import { Platform } from 'quasar';
 
 const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
-  history: Platform.is.electron ? createWebHashHistory() : createWebHistory(),
+  history: createWebHistory(),
   routes,
 });
 

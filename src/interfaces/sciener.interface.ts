@@ -1,3 +1,5 @@
+import { Response } from '@interfaces/response.interface';
+
 export interface Duration {
   start_date: string;
   end_date: string;
@@ -23,8 +25,8 @@ export interface Rental {
   tenant: Tenant;
 }
 
-export interface RentalResponse {
-  errcode: number;
-  errmsg: string;
+export interface RentalResponse extends Response {
   data: Rental;
 }
+
+export interface FreezeUnfreezeResponse extends Response {}

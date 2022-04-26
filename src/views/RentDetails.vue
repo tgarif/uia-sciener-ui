@@ -2,13 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { api } from '../api/index.api';
-import { Rental } from '../interfaces/sciener.interface';
 import { rentalStore } from '../stores/rental.store';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
-
-const props = defineProps({
-  id: String,
-});
 
 const rental = rentalStore();
 const quasar = useQuasar();
@@ -22,17 +17,9 @@ onBeforeRouteLeave(() => {
 });
 
 const isLoading = ref(false);
-const rentalData = ref({} as Rental);
-
-const checkRentalData = () => {
-  return (
-    rentalData.value.constructor === Object &&
-    Object.entries(rentalData.value).length > 0
-  );
-};
 
 const getRental = async () => {
-  const response = await api.sciener.getRental(props.id as string);
+  const response = await api.sciener.getRental(route.params.id as string);
   if (response.errcode === 1) {
     quasar.notify({
       color: 'blue-grey-8',
@@ -51,14 +38,12 @@ const getRental = async () => {
   }
 
   if (response.errcode === 0) {
-    rentalData.value = response.data;
+    rental.setRentalData(response.data);
   }
 };
 
 onMounted(() => {
-  if (rental.hasRentalData) {
-    rentalData.value = rental.getRentalData;
-  } else {
+  if (!rental.hasRentalData) {
     getRental();
   }
 });
@@ -68,15 +53,45 @@ const action = async () => {
     isLoading.value = true;
     let response;
 
-    if (rentalData.value.room.status === 'freeze') {
-      response = await api.sciener.unfreezeRental(props.id as string);
+    if (rental.getRentalData.room.status === 'freeze') {
+      response = await api.sciener.unfreezeRental(route.params.id as string);
     } else {
-      response = await api.sciener.freezeRental(props.id as string);
+      response = await api.sciener.freezeRental(route.params.id as string);
+    }
+
+    if (response.errcode === 1) {
+      quasar.notify({
+        color: 'blue-grey-8',
+        message: `Error code: ${response.errcode}` || 'Something went wrong',
+        caption: response.errmsg || '',
+        icon: 'error',
+        position: quasar.screen.lt.md ? 'bottom' : 'bottom-left',
+        actions: [
+          {
+            label: 'x',
+            color: 'blue-grey-1',
+          },
+        ],
+      });
+    }
+
+    if (response.errcode === 0) {
+      getRental();
+      quasar.notify({
+        color: 'positive',
+        message: 'Status change successfully',
+        icon: 'check_circle',
+        position: quasar.screen.lt.md ? 'bottom' : 'bottom-left',
+        actions: [
+          {
+            label: 'x',
+            color: 'blue-grey-1',
+          },
+        ],
+      });
     }
 
     isLoading.value = false;
-
-    console.log(response);
   } catch {
     isLoading.value = false;
   }
@@ -99,8 +114,8 @@ const action = async () => {
 
     <q-breadcrumbs-el
       icon="meeting_room"
-      :label="String(props.id)"
-      :to="`/rent/${props.id}`"
+      :label="String(route.params.id)"
+      :to="`/rent/${route.params.id}`"
     />
   </q-breadcrumbs>
 
@@ -111,7 +126,7 @@ const action = async () => {
           quasar.screen.lt.md ? 'text-h5' : 'text-h4'
         }`"
       >
-        Detail for record <code>{{ props.id }}</code>
+        Detail for record <code>{{ route.params.id }}</code>
       </div>
     </div>
     <div
@@ -121,13 +136,13 @@ const action = async () => {
           ? 'max-width: 700px; margin-top: 0.5rem;'
           : 'max-width: 1000px'
       "
-      v-if="checkRentalData()"
+      v-if="rental.hasRentalData"
     >
       <div
-        :class="`text-center ${quasar.screen.lt.md ? 'text-h6' : 'text-h5'}`"
+        :class="`text-center ${quasar.screen.lt.md ? 'text-body1' : 'text-h5'}`"
       >
-        Start from <code>{{ rentalData.duration.start_date }}</code
-        >, end at <code>{{ rentalData.duration.end_date }}</code>
+        Start from <code>{{ rental.getRentalData.duration.start_date }}</code
+        >, end at <code>{{ rental.getRentalData.duration.end_date }}</code>
       </div>
 
       <div class="row full-width">
@@ -141,35 +156,35 @@ const action = async () => {
 
             <q-separator />
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">ID</div>
 
               <div class="text-grey-9">
-                {{ rentalData.tenant.id }}
+                {{ rental.getRentalData.tenant.id }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Name</div>
 
               <div class="text-grey-9">
-                {{ rentalData.tenant.name }}
+                {{ rental.getRentalData.tenant.name }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Email</div>
 
               <div class="text-grey-9">
-                {{ rentalData.tenant.email }}
+                {{ rental.getRentalData.tenant.email }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Contact Number</div>
 
               <div class="text-grey-9">
-                {{ rentalData.tenant.contact_no }}
+                {{ rental.getRentalData.tenant.contact_no }}
               </div>
             </q-card-section>
           </q-card>
@@ -185,35 +200,35 @@ const action = async () => {
 
             <q-separator />
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">ID</div>
 
               <div class="text-grey-9">
-                {{ rentalData.room.id }}
+                {{ rental.getRentalData.room.id }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Name</div>
 
               <div class="text-grey-9">
-                {{ rentalData.room.name }}
+                {{ rental.getRentalData.room.name }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Key</div>
 
               <div class="text-grey-9">
-                {{ rentalData.room.key }}
+                {{ rental.getRentalData.room.key }}
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section :style="quasar.screen.lt.md && 'padding: 5px 16px'">
               <div class="text-h6">Status</div>
 
               <div class="text-grey-9">
-                {{ rentalData.room.status }}
+                {{ rental.getRentalData.room.status }}
               </div>
             </q-card-section>
           </q-card>
@@ -223,8 +238,11 @@ const action = async () => {
         class="button text-capitalize"
         color="white"
         text-color="dark"
-        :label="rentalData.room.status === 'freeze' ? 'unfreeze' : 'freeze'"
+        :label="
+          rental.getRentalData.room.status === 'freeze' ? 'unfreeze' : 'freeze'
+        "
         style="border: 2px solid black; margin-top: 1rem"
+        :loading="isLoading"
         @click="action()"
       />
     </div>
