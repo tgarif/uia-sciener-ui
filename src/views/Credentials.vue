@@ -11,15 +11,19 @@ const router = useRouter();
 
 const inputBgColor = ref('white');
 const accessToken = ref('');
+const isLoading = ref(false);
 
 const formSubmit = async () => {
   try {
+    isLoading.value = true;
+
     const response = await api.credential.validate(accessToken.value);
     application.setAccessToken(accessToken.value);
     quasar.notify({
       color: 'positive',
       message: response.msg,
       icon: 'check_circle',
+      badgeColor: 'secondary',
       position: quasar.screen.lt.md ? 'bottom' : 'bottom-left',
       actions: [
         {
@@ -28,8 +32,12 @@ const formSubmit = async () => {
         },
       ],
     });
+
+    isLoading.value = false;
     router.push('/rent');
-  } catch {}
+  } catch {
+    isLoading.value = false;
+  }
 };
 </script>
 
@@ -74,6 +82,7 @@ const formSubmit = async () => {
           text-color="dark"
           label="Add Key"
           style="border: 2px solid black"
+          :loading="isLoading"
         />
       </q-form>
     </div>

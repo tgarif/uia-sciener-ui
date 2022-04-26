@@ -81,6 +81,7 @@ const action = async () => {
         color: 'positive',
         message: 'Status change successfully',
         icon: 'check_circle',
+        badgeColor: 'secondary',
         position: quasar.screen.lt.md ? 'bottom' : 'bottom-left',
         actions: [
           {
@@ -234,17 +235,29 @@ const action = async () => {
           </q-card>
         </div>
       </div>
-      <q-btn
-        class="button text-capitalize"
-        color="white"
-        text-color="dark"
-        :label="
-          rental.getRentalData.room.status === 'freeze' ? 'unfreeze' : 'freeze'
-        "
-        style="border: 2px solid black; margin-top: 1rem"
-        :loading="isLoading"
-        @click="action()"
-      />
+      <div class="content--btn">
+        <q-btn
+          class="button text-capitalize"
+          color="white"
+          text-color="dark"
+          label="Back"
+          style="border: 2px solid black; margin-top: 1rem"
+          @click="router.push('/rent')"
+        />
+        <q-btn
+          class="button text-capitalize"
+          color="white"
+          text-color="dark"
+          :label="
+            rental.getRentalData.room.status === 'freeze'
+              ? 'unfreeze'
+              : 'freeze'
+          "
+          style="border: 2px solid black; margin-top: 1rem"
+          :loading="isLoading"
+          @click="action()"
+        />
+      </div>
     </div>
 
     <div class="loading" v-else><q-spinner color="primary" size="3em" /></div>
