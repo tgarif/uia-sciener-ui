@@ -23,6 +23,13 @@ onBeforeRouteLeave(() => {
 
 const rentalData = ref({} as Rental);
 
+const checkRentalData = () => {
+  return (
+    rentalData.value.constructor === Object &&
+    Object.entries(rentalData.value).length > 0
+  );
+};
+
 const getRental = async () => {
   const response = await api.sciener.getRental(props.id as string);
   if (response.errcode === 1) {
@@ -77,7 +84,108 @@ onMounted(() => {
     />
   </q-breadcrumbs>
 
-  <q-page class="container">
-    <div class="content">Hello World</div>
+  <q-page class="container" :style="quasar.screen.lt.md && 'padding: 1rem;'">
+    <div class="content">
+      <div
+        :class="`text-weight-bold text-center ${
+          quasar.screen.lt.md ? 'text-h5' : 'text-h4'
+        }`"
+      >
+        Detail for record <code>{{ props.id }}</code>
+      </div>
+    </div>
+    <div
+      class="content--details"
+      :style="
+        quasar.screen.lt.md
+          ? 'max-width: 700px; margin-top: 0.5rem;'
+          : 'max-width: 1000px'
+      "
+      v-if="checkRentalData()"
+    >
+      <div
+        :class="`text-center ${quasar.screen.lt.md ? 'text-h6' : 'text-h5'}`"
+      >
+        Start from <code>{{ rentalData.duration.start_date }}</code
+        >, end at <code>{{ rentalData.duration.end_date }}</code>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-sm-6 q-pa-md">
+          <q-card class="my-card" flat bordered>
+            <q-item>
+              <q-item-section>
+                <q-item-label class="text-h5">Tenant</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-separator />
+
+            <q-card-section horizontal>
+              <q-card-section> ID </q-card-section>
+
+              <q-separator vertical />
+
+              <q-card-section class="col-6">
+                {{ rentalData.tenant.id }}
+              </q-card-section>
+            </q-card-section>
+
+            <q-card-section horizontal>
+              <q-card-section> Name </q-card-section>
+
+              <q-separator vertical />
+
+              <q-card-section class="col-6">
+                {{ rentalData.tenant.name }}
+              </q-card-section>
+            </q-card-section>
+
+            <q-card-section horizontal>
+              <q-card-section> Email </q-card-section>
+
+              <q-separator vertical />
+
+              <q-card-section class="col-6">
+                {{ rentalData.tenant.email }}
+              </q-card-section>
+            </q-card-section>
+
+            <q-card-section horizontal>
+              <q-card-section> Contact Number </q-card-section>
+
+              <q-separator vertical />
+
+              <q-card-section class="col-6">
+                {{ rentalData.tenant.contact_no }}
+              </q-card-section>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-12 col-sm-6 q-pa-md">
+          <q-card class="my-card" flat bordered>
+            <q-item>
+              <q-item-section>
+                <q-item-label class="text-h5">Room</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-separator />
+
+            <q-card-section horizontal>
+              <q-card-section> asdqwe </q-card-section>
+
+              <q-separator vertical />
+
+              <q-card-section class="col-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </q-card-section>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading" v-else><q-spinner color="primary" size="3em" /></div>
   </q-page>
 </template>

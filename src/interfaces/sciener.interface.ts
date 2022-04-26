@@ -1,6 +1,6 @@
 export interface Duration {
-  start_data: string;
-  end_data: string;
+  start_date: string;
+  end_date: string;
 }
 
 export interface Room {

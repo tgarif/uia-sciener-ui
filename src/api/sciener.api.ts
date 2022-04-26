@@ -3,11 +3,9 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 
 export class ScienerApi {
   axios: AxiosInstance;
-  accessToken: string;
 
   constructor(params: AxiosInstance) {
     this.axios = params;
-    this.accessToken = localStorage.getItem('Access-Token') || '';
   }
 
   rootCall = (): Promise<any> => {
@@ -17,7 +15,7 @@ export class ScienerApi {
   freezeRental = (): Promise<any> => {
     return this.axios.post('/freeze', {
       headers: {
-        'Access-Token': this.accessToken,
+        'Access-Token': String(localStorage.getItem('Access-Token')),
       },
     });
   };
@@ -25,7 +23,7 @@ export class ScienerApi {
   unfreezeRental = (): Promise<any> => {
     return this.axios.post('/unfreeze', {
       headers: {
-        'Access-Token': this.accessToken,
+        'Access-Token': String(localStorage.getItem('Access-Token')),
       },
     });
   };
@@ -33,7 +31,7 @@ export class ScienerApi {
   getRental = (rental_id: string): Promise<RentalResponse> => {
     return this.axios.get(`/rentals/${rental_id}`, {
       headers: {
-        'Access-Token': this.accessToken,
+        'Access-Token': String(localStorage.getItem('Access-Token')),
       },
     });
   };
