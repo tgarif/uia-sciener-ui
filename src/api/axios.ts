@@ -1,5 +1,6 @@
 import { formatTime } from '@utils/dayjs.util';
-import { config } from 'providers/config.provider';
+import { config } from '@providers/config.provider';
+import { ErrorResponse } from '@interfaces/response.interface';
 import { Notify, Screen, Platform } from 'quasar';
 import Axios, { AxiosError } from 'axios';
 
@@ -17,12 +18,12 @@ instance.interceptors.request.use(
       ...configShallowCopy,
     };
   },
-  (error: AxiosError<any>) => {
-    let caption = error.response?.data.error.message;
+  (error: AxiosError<ErrorResponse>) => {
+    let caption = error.response?.data.detail || '';
 
     if (Platform.is.electron) {
       new Notification(
-        error.response?.data.error.code || 'Something went wrong',
+        String(error.response?.status) || 'Something went wrong',
         {
           body: caption,
         }
@@ -30,7 +31,7 @@ instance.interceptors.request.use(
     } else {
       Notify.create({
         color: 'blue-grey-8',
-        message: error.response?.data.error.code || 'Something went wrong',
+        message: String(error.response?.status) || 'Something went wrong',
         caption,
         icon: 'error',
         position: Screen.lt.md ? 'bottom' : 'bottom-left',
@@ -49,22 +50,22 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.data.data) {
-      if (response.data.data.constructor === Object) {
-        formatTime(response.data.data);
+    if (response.data) {
+      if (response.data.constructor === Object) {
+        formatTime(response.data);
       }
 
       // TODO: Handle if response is array
     }
 
-    return response.data.data;
+    return response.data;
   },
-  (error: AxiosError<any>) => {
-    let caption = error.response?.data.error.message;
+  (error: AxiosError<ErrorResponse>) => {
+    let caption = error.response?.data.detail || '';
 
     if (Platform.is.electron) {
       new Notification(
-        error.response?.data.error.code || 'Something went wrong',
+        String(error.response?.status) || 'Something went wrong',
         {
           body: caption,
         }
@@ -72,7 +73,7 @@ instance.interceptors.response.use(
     } else {
       Notify.create({
         color: 'blue-grey-8',
-        message: error.response?.data.error.code || 'Something went wrong',
+        message: String(error.response?.status) || 'Something went wrong',
         caption,
         icon: 'error',
         position: Screen.lt.md ? 'bottom' : 'bottom-left',

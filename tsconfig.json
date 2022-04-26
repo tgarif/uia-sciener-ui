@@ -21,6 +21,7 @@
       "@components/*": ["./components/*"],
       "@interfaces/*": ["./interfaces/*"],
       "@layouts/*": ["./layouts/*"],
+      "@providers/*": ["./providers/*"],
       "@router/*": ["./router/*"],
       "@stores/*": ["./stores/*"],
       "@utils/*": ["./utils/*"],

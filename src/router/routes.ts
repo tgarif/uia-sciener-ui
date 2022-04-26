@@ -10,6 +10,33 @@ const webRoutes: RouteRecordRaw[] = [
         path: '/credential',
         component: () => import('@views/Credentials.vue'),
         alias: '',
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('Access-Token')) {
+            next('/rent');
+            return;
+          } else {
+            next();
+          }
+        },
+      },
+      {
+        path: '/rent',
+        component: () => import('@views/Rent.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/rent/:id',
+        component: () => import('@views/RentDetails.vue'),
+        meta: { requiresAuth: true },
+        props: true,
+        beforeEnter: (to, from, next) => {
+          if (to.params.id) {
+            next();
+            return;
+          } else {
+            next('/rent');
+          }
+        },
       },
     ],
   },
@@ -32,6 +59,16 @@ const electronRoutes: RouteRecordRaw[] = [
         path: '/credential',
         component: () => import('@views/Credentials.vue'),
         alias: '',
+      },
+      {
+        path: '/rent',
+        component: () => import('@views/Rent.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/rent/:id',
+        component: () => import('@views/RentDetails.vue'),
+        meta: { requiresAuth: true },
       },
     ],
   },
