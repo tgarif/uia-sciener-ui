@@ -16,34 +16,14 @@ export class ScienerApi {
   };
 
   freezeRental = (id: string): Promise<FreezeUnfreezeResponse> => {
-    return this.axios.post(
-      `/freeze/${id}`,
-      {},
-      {
-        headers: {
-          'Access-Token': String(localStorage.getItem('Access-Token')),
-        },
-      }
-    );
+    return this.axios.post(`/freeze/${id}`);
   };
 
   unfreezeRental = (id: string): Promise<FreezeUnfreezeResponse> => {
-    return this.axios.post(
-      `/unfreeze/${id}`,
-      {},
-      {
-        headers: {
-          'Access-Token': String(localStorage.getItem('Access-Token')),
-        },
-      }
-    );
+    return this.axios.post(`/unfreeze/${id}`);
   };
 
   getRental = (rental_id: string): Promise<RentalResponse> => {
-    return this.axios.get(`/rentals/${rental_id}`, {
-      headers: {
-        'Access-Token': String(localStorage.getItem('Access-Token')),
-      },
-    });
+    return this.axios.get(`/rentals/${rental_id}`);
   };
 }

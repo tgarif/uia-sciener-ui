@@ -4,11 +4,15 @@ import { ErrorResponse } from '@interfaces/response.interface';
 import { Notify, Screen, Platform } from 'quasar';
 import Axios, { AxiosError } from 'axios';
 
-const instance = Axios.create({
+const publicInstance = Axios.create({
   baseURL: config.apiURL,
 });
 
-instance.interceptors.request.use(
+const privateInstance = Axios.create({
+  baseURL: config.apiURL,
+});
+
+publicInstance.interceptors.request.use(
   (config) => {
     const configShallowCopy = { ...config };
 
@@ -39,7 +43,7 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
+publicInstance.interceptors.response.use(
   (response) => {
     if (response.data) {
       if (response.data.constructor === Object) {
@@ -72,4 +76,71 @@ instance.interceptors.response.use(
   }
 );
 
-export const axios = instance;
+privateInstance.interceptors.request.use(
+  (config) => {
+    const configShallowCopy = { ...config };
+
+    return {
+      ...configShallowCopy,
+      headers: {
+        ...configShallowCopy.headers,
+        'Access-Token': String(localStorage.getItem('Access-Token')),
+      },
+    };
+  },
+  (error: AxiosError<ErrorResponse>) => {
+    let caption = error.response?.data.detail || '';
+
+    Notify.create({
+      color: 'blue-grey-8',
+      message: String(error.response?.status) || 'Something went wrong',
+      caption,
+      icon: 'error',
+      position: Screen.lt.md ? 'bottom' : 'bottom-left',
+      actions: [
+        {
+          label: 'x',
+          color: 'blue-grey-1',
+        },
+      ],
+    });
+
+    return Promise.reject(error);
+  }
+);
+
+privateInstance.interceptors.response.use(
+  (response) => {
+    if (response.data) {
+      if (response.data.constructor === Object) {
+        formatTime(response.data);
+      }
+
+      // TODO: Handle if response is array
+    }
+
+    return response.data;
+  },
+  (error: AxiosError<ErrorResponse>) => {
+    let caption = error.response?.data.detail || '';
+
+    Notify.create({
+      color: 'blue-grey-8',
+      message: String(error.response?.status) || 'Something went wrong',
+      caption,
+      icon: 'error',
+      position: Screen.lt.md ? 'bottom' : 'bottom-left',
+      actions: [
+        {
+          label: 'x',
+          color: 'blue-grey-1',
+        },
+      ],
+    });
+
+    return Promise.reject(error);
+  }
+);
+
+export const publicApi = publicInstance;
+export const privateApi = privateInstance;
