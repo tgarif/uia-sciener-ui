@@ -1,7 +1,7 @@
 import { formatTime } from '@utils/dayjs.util';
 import { config } from '@providers/config.provider';
 import { ErrorResponse } from '@interfaces/response.interface';
-import { Notify, Screen, Platform } from 'quasar';
+import { Notify, Screen } from 'quasar';
 import Axios, { AxiosError } from 'axios';
 
 const publicInstance = Axios.create({
