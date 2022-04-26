@@ -21,28 +21,19 @@ instance.interceptors.request.use(
   (error: AxiosError<ErrorResponse>) => {
     let caption = error.response?.data.detail || '';
 
-    if (Platform.is.electron) {
-      new Notification(
-        String(error.response?.status) || 'Something went wrong',
+    Notify.create({
+      color: 'blue-grey-8',
+      message: String(error.response?.status) || 'Something went wrong',
+      caption,
+      icon: 'error',
+      position: Screen.lt.md ? 'bottom' : 'bottom-left',
+      actions: [
         {
-          body: caption,
-        }
-      );
-    } else {
-      Notify.create({
-        color: 'blue-grey-8',
-        message: String(error.response?.status) || 'Something went wrong',
-        caption,
-        icon: 'error',
-        position: Screen.lt.md ? 'bottom' : 'bottom-left',
-        actions: [
-          {
-            label: 'x',
-            color: 'blue-grey-1',
-          },
-        ],
-      });
-    }
+          label: 'x',
+          color: 'blue-grey-1',
+        },
+      ],
+    });
 
     return Promise.reject(error);
   }
@@ -63,28 +54,19 @@ instance.interceptors.response.use(
   (error: AxiosError<ErrorResponse>) => {
     let caption = error.response?.data.detail || '';
 
-    if (Platform.is.electron) {
-      new Notification(
-        String(error.response?.status) || 'Something went wrong',
+    Notify.create({
+      color: 'blue-grey-8',
+      message: String(error.response?.status) || 'Something went wrong',
+      caption,
+      icon: 'error',
+      position: Screen.lt.md ? 'bottom' : 'bottom-left',
+      actions: [
         {
-          body: caption,
-        }
-      );
-    } else {
-      Notify.create({
-        color: 'blue-grey-8',
-        message: String(error.response?.status) || 'Something went wrong',
-        caption,
-        icon: 'error',
-        position: Screen.lt.md ? 'bottom' : 'bottom-left',
-        actions: [
-          {
-            label: 'x',
-            color: 'blue-grey-1',
-          },
-        ],
-      });
-    }
+          label: 'x',
+          color: 'blue-grey-1',
+        },
+      ],
+    });
 
     return Promise.reject(error);
   }
