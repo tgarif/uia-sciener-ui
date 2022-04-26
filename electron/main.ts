@@ -1,5 +1,7 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+
+const isDev = process.env.IS_DEV == 'true' ? true : false;
 
 let mainWindow;
 
@@ -7,6 +9,8 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.ts'),
@@ -19,9 +23,12 @@ function createWindow() {
     win.setTitle(title);
   });
 
-  mainWindow.loadFile('dist/index.html');
-
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.loadFile('dist/index.html');
+  }
 }
 
 app.whenReady().then(() => {

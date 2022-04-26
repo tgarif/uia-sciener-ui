@@ -1,11 +1,16 @@
+import { Platform } from 'quasar';
 import { RouteRecordRaw } from 'vue-router';
 
-export const routes: RouteRecordRaw[] = [
+const webRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('@layouts/MainLayout.vue'),
+    component: () => import('@layouts/WebLayout.vue'),
     children: [
-      { path: '/auth', component: () => import('@views/Index.vue'), alias: '' },
+      {
+        path: '/credential',
+        component: () => import('@views/Credentials.vue'),
+        alias: '',
+      },
     ],
   },
 
@@ -14,6 +19,32 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/:catchAll(.*)*',
     name: 'notfound',
-    redirect: '/auth',
+    redirect: '/credential',
   },
 ];
+
+const electronRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('@layouts/ElectronLayout.vue'),
+    children: [
+      {
+        path: '/credential',
+        component: () => import('@views/Credentials.vue'),
+        alias: '',
+      },
+    ],
+  },
+
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '/:catchAll(.*)*',
+    name: 'notfound',
+    redirect: '/credential',
+  },
+];
+
+export const routes: RouteRecordRaw[] = Platform.is.electron
+  ? electronRoutes
+  : webRoutes;

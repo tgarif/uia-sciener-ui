@@ -22,6 +22,7 @@
       "@interfaces/*": ["./interfaces/*"],
       "@layouts/*": ["./layouts/*"],
       "@router/*": ["./router/*"],
+      "@stores/*": ["./stores/*"],
       "@utils/*": ["./utils/*"],
       "@views/*": ["./views/*"]
     }

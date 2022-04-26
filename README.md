@@ -26,8 +26,7 @@ $ yarn build
 
 ```bash
 # Development
-$ yarn build
-$ yarn electron:start
+$ yarn electron:dev
 
 # Production
 $ yarn app:build
