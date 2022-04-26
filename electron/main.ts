@@ -1,40 +1,9 @@
-const {
-  app,
-  BrowserWindow,
-  WebPreferences,
-  ipcMain,
-  protocol,
-} = require('electron');
+const { app, BrowserWindow, WebPreferences, ipcMain } = require('electron');
 const path = require('path');
 
 const isDev = process.env.IS_DEV == 'true' ? true : false;
 
 let mainWindow;
-
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: 'http',
-    privileges: {
-      standard: true,
-      bypassCSP: true,
-      allowServiceWorkers: true,
-      supportFetchAPI: true,
-      corsEnabled: true,
-      stream: true,
-    },
-  },
-  {
-    scheme: 'https',
-    privileges: {
-      standard: true,
-      bypassCSP: true,
-      allowServiceWorkers: true,
-      supportFetchAPI: true,
-      corsEnabled: true,
-      stream: true,
-    },
-  },
-]);
 
 function createWindow() {
   mainWindow = new BrowserWindow({
