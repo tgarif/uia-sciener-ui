@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { applicationStore } from '../stores/application.store';
 
-const Logo = new URL('../assets/images/Logo.svg', import.meta.url).href;
-
 const application = applicationStore();
 </script>
 
@@ -11,7 +9,7 @@ const application = applicationStore();
     <q-header elevated class="bg-dork text-white" height-hint="98">
       <q-toolbar>
         <q-toolbar-title class="header--title q-gutter-md">
-          <q-img :src="Logo" style="width: 3rem" />
+          <q-img src="/src/assets/images/Logo.svg" style="width: 3rem" />
           <div class="text-h4">UIA Sciener Integration</div>
         </q-toolbar-title>
       </q-toolbar>
