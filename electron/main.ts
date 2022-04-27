@@ -28,7 +28,7 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:3000');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadURL('http://159.223.45.248:3000');
+    mainWindow.loadURL('http://159.223.45.248');
   }
 }
 
