@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { applicationStore } from '../stores/application.store';
-import Logo from '../assets/images/Logo.svg';
+
+const Logo = new URL('../assets/images/Logo.svg', import.meta.url).href;
 
 const application = applicationStore();
 </script>
